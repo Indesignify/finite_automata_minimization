@@ -1,3 +1,11 @@
+# Base IDEA folder
+.idea
+
+# Images.
+*.png
+
+*.pyc
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
