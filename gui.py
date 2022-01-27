@@ -5,10 +5,10 @@ import time
 import sys
 
 try:
-    from Tkinter import *
-    import tkFont
+    from tkinter import *
+    import tkinter.font as tkFont
 except ImportError as err:
-    print "Ошибка: %s. Для корректного отображения графического интерфейса в системе должна быть установлена библиотека Tkinter." % err.message
+    print(f"Ошибка: {err}. Для корректного отображения графического интерфейса в системе должна быть установлена библиотека Tkinter.")
     sys.exit(1)
 
 from AutomataTheory import *
@@ -18,10 +18,10 @@ if dotFound:
     try:
         from PIL import Image, ImageTk
     except ImportError as err:
-        print "Внимание: {}. Библиотека PIL требуется для корректного отображения изображений.".format(err.message)
+        print(f"Внимание: {err}. Библиотека PIL требуется для корректного отображения изображений.")
         dotFound = False
 else:
-    print "Внимание: для корректного отображения изображений требуется программное обеспечение GraphViz."
+    print("Внимание: для корректного отображения изображений требуется программное обеспечение GraphViz.")
 
 
 class AutomataGUI:
@@ -42,12 +42,12 @@ class AutomataGUI:
         ScreenRatioY = 0.8
         self.FrameSizeX = int(ScreenSizeX * ScreenRatioX)
         self.FrameSizeY = int(ScreenSizeY * ScreenRatioY)
-        print self.FrameSizeY, self.FrameSizeX
+        print(self.FrameSizeY, self.FrameSizeX)
         FramePosX = (ScreenSizeX - self.FrameSizeX) / 2
         FramePosY = (ScreenSizeY - self.FrameSizeY) / 2
         padX = 10
         padY = 10
-        self.root.geometry("%sx%s+%s+%s" % (self.FrameSizeX, self.FrameSizeY, FramePosX, FramePosY))
+        self.root.geometry(f"{self.FrameSizeX}x{self.FrameSizeY}+{int(FramePosX)}+{int(FramePosY)}")
         self.root.resizable(width=False, height=False)
 
         parentFrame = Frame(self.root, width=int(self.FrameSizeX - 2 * padX), height=int(self.FrameSizeY - 2 * padY))
@@ -118,8 +118,8 @@ class AutomataGUI:
                 return
             self.create_automata(inp)
         except BaseException as e:
-            self.statusLabel.config(text="Ошибка: %s" % e)
-        self.timingLabel.configure(text="Операция выполнена за " + "%.4f" % (time.time() - t) + " секунд")
+            self.statusLabel.config(text=f"Ошибка: {e}")
+        self.timingLabel.configure(text="Операция выполнена за " + f"{time.time() - t:.4f}" + " секунд")
         self.display_automata()
 
     def handle_test_string_button(self):
@@ -131,7 +131,7 @@ class AutomataGUI:
             self.statusLabel.config(text="Принимает :)")
         else:
             self.statusLabel.config(text="Не принимает :|")
-        self.timingLabel.configure(text="Операция выполнена за " + "%.4f" % (time.time() - t) + " секунд")
+        self.timingLabel.configure(text="Операция выполнена за " + f"{time.time() - t:.4f}" + " секунд")
 
     def handle_nfa_button(self):
         self.selectedButton = 0
@@ -146,7 +146,7 @@ class AutomataGUI:
         self.display_automata()
 
     def create_automata(self, input):
-        print u"Регулярное выражение: ", input
+        print(u"Регулярное выражение: ", input)
         nfaObj = NFAfromRegex(input)
         self.nfa = nfaObj.get_nfa()
         self.dfaObj = DFAfromNFA(self.nfa)

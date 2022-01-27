@@ -71,15 +71,15 @@ class Automata:
         return all_states
 
     def display(self):
-        print "Состояния:", self.states
-        print "Начальное состояние: ", self.start_state
-        print "Финальные состояния: ", self.final_states
-        print "Переходы: "
+        print("Состояния:", self.states)
+        print("Начальное состояние: ", self.start_state)
+        print("Финальные состояния: ", self.final_states)
+        print("Переходы: ")
         for from_state, to_states in self.transitions.items():
             for state in to_states:
                 for char in to_states[state]:
-                    print "  ", from_state, "->", state, "on '" + char + "'"
-            print
+                    print("  ", from_state, "->", state, "on '" + char + "'")
+            print()
 
     def get_print_text(self):
         text = "Язык: {" + ", ".join(self.language) + "}\n"
@@ -242,9 +242,9 @@ class DFAfromNFA:
                         toindex = count
                         count += 1
                     else:
-                        toindex = [k for k, v in allstates.iteritems() if v == trstates][0]
+                        toindex = [k for k, v in allstates.items() if v == trstates][0]
                     dfa.add_transition(fromindex, toindex, char)
-        for value, state in allstates.iteritems():
+        for value, state in allstates.items():
             if nfa.final_states[0] in state:
                 dfa.add_final_states(value)
         self.dfa = dfa
@@ -314,7 +314,8 @@ class DFAfromNFA:
         new_found = True
         while new_found and len(unchecked) > 0:
             new_found = False
-            for p, pair in unchecked.items():
+            for p in list(unchecked):
+                pair = unchecked[p]
                 for tr in pair[2:]:
                     if [tr[0], tr[1]] in distinguished or [tr[1], tr[0]] in distinguished:
                         unchecked.pop(p)
@@ -375,10 +376,10 @@ class NFAfromRegex:
                 self.stack.append(char)
             elif char == self.closingBracket:
                 if previous in self.operators:
-                    raise RuntimeError("Произошла ошибка на символе '%s' после символа '%s'" % (char, previous))
+                    raise RuntimeError(f"Произошла ошибка на символе '{char}' после символа '{previous}'")
                 while True:
                     if len(self.stack) == 0:
-                        raise RuntimeError("Ошибка при обработке '%s'. Стек пуст" % char)
+                        raise RuntimeError(f"Ошибка при обработке '{char}'. Стек пуст")
                     o = self.stack.pop()
                     if o == self.openingBracket:
                         break
@@ -386,21 +387,21 @@ class NFAfromRegex:
                         self.process_operator(o)
             elif char == self.star:
                 if previous in self.operators or previous == self.openingBracket or previous == self.star:
-                    raise RuntimeError("Error processing '%s' after '%s'" % (char, previous))
+                    raise RuntimeError(f"Error processing '{char}' after '{previous}'")
                 self.process_operator(char)
             elif char in self.operators:
                 if previous in self.operators or previous == self.openingBracket:
-                    raise RuntimeError("Error processing '%s' after '%s'" % (char, previous))
+                    raise RuntimeError(f"Error processing '{char}' after '{previous}'")
                 else:
                     self.add_operator_to_stack(char)
             else:
-                raise RuntimeError("Символ '%s' не разрешён!" % char)
+                raise RuntimeError(f"Символ '{char}' не разрешён!")
             previous = char
         while len(self.stack) != 0:
             op = self.stack.pop()
             self.process_operator(op)
         if len(self.automata) > 1:
-            print self.automata
+            print(self.automata)
             raise RuntimeError("Не удалось обработать регулярное выражение")
         self.nfa = self.automata.pop()
         self.nfa.language = language
@@ -421,13 +422,13 @@ class NFAfromRegex:
 
     def process_operator(self, operator):
         if len(self.automata) == 0:
-            raise RuntimeError("Error processing operator '%s'. Stack is empty" % operator)
+            raise RuntimeError(f"Error processing operator '{operator}'. Stack is empty")
         if operator == self.star:
             a = self.automata.pop()
             self.automata.append(BuildAutomata.star_struct(a))
         elif operator in self.operators:
             if len(self.automata) < 2:
-                raise RuntimeError("Error processing operator '%s'. Inadequate operands" % operator)
+                raise RuntimeError(f"Error processing operator '{operator}'. Inadequate operands")
             a = self.automata.pop()
             b = self.automata.pop()
             if operator == self.plus:
