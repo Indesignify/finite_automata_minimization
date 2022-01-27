@@ -1,4 +1,4 @@
-# coding=UTF-8
+# -*- coding: utf-8 -*-
 
 import time
 
@@ -8,7 +8,7 @@ try:
     from Tkinter import *
     import tkFont
 except ImportError as err:
-    print("Ошибка: %s. Для корректного отображения графического интерфейса в системе должна быть установлена библиотека Tkinter.") % err.message
+    print "Ошибка: %s. Для корректного отображения графического интерфейса в системе должна быть установлена библиотека Tkinter." % err.message
     sys.exit(1)
 
 from AutomataTheory import *
@@ -16,16 +16,15 @@ from AutomataTheory import *
 dotFound = is_installed("dot")
 if dotFound:
     try:
-        import Image, ImageTk
+        from PIL import Image, ImageTk
     except ImportError as err:
-        print("Внимание: %s. Библиотека PIL требуется для корректного отображения изображений.") % err.message
+        print "Внимание: {}. Библиотека PIL требуется для корректного отображения изображений.".format(err.message)
         dotFound = False
 else:
-    print("Внимание: для корректного отображения изображений требуется программное обеспечение GraphViz.")
+    print "Внимание: для корректного отображения изображений требуется программное обеспечение GraphViz."
 
 
 class AutomataGUI:
-
     def __init__(self, root, dotFound):
         self.root = root
         self.init_ui()
@@ -43,7 +42,7 @@ class AutomataGUI:
         ScreenRatioY = 0.8
         self.FrameSizeX = int(ScreenSizeX * ScreenRatioX)
         self.FrameSizeY = int(ScreenSizeY * ScreenRatioY)
-        print(self.FrameSizeY, self.FrameSizeX)
+        print self.FrameSizeY, self.FrameSizeX
         FramePosX = (ScreenSizeX - self.FrameSizeX) / 2
         FramePosY = (ScreenSizeY - self.FrameSizeY) / 2
         padX = 10
@@ -147,7 +146,7 @@ class AutomataGUI:
         self.display_automata()
 
     def create_automata(self, input):
-        print("Регулярное выражение: ", input)
+        print u"Регулярное выражение: ", input
         nfaObj = NFAfromRegex(input)
         self.nfa = nfaObj.get_nfa()
         self.dfaObj = DFAfromNFA(self.nfa)

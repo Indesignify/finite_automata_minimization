@@ -1,4 +1,4 @@
-# coding=UTF-8
+# -*- coding: utf-8 -*-
 
 import sys
 import time
@@ -10,17 +10,17 @@ def main():
     inp = "(01*1)*1"
     if len(sys.argv) > 1:
         inp = sys.argv[1]
-    print("Регулярное выражение: ", inp)
+    print "Регулярное выражение: ", inp
     nfaObj = NFAfromRegex(inp)
     nfa = nfaObj.get_nfa()
     dfaObj = DFAfromNFA(nfa)
     dfa = dfaObj.get_dfa()
     minDFA = dfaObj.get_minimised_dfa()
-    print("\nNFA: ")
+    print "\nNFA: "
     nfaObj.display_nfa()
-    print("\nDFA: ")
+    print "\nDFA: "
     dfaObj.display_dfa()
-    print("\nМинимизированный DFA: ")
+    print "\nМинимизированный DFA: "
     dfaObj.display_minimised_dfa()
     if is_installed("dot"):
         draw_graph(dfa, "dfa")
@@ -37,5 +37,5 @@ if __name__ == '__main__':
     try:
         main()
     except BaseException as e:
-        print("\nОшибка:", e)
-    print("\nВремя выполнения: ", time.time() - t, "секунд")
+        print "\nОшибка:", e
+    print "\nВремя выполнения: ", time.time() - t, "секунд"
