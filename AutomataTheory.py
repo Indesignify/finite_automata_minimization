@@ -194,6 +194,10 @@ class BuildAutomata:
         star.add_transition_dict(a.transitions)
         return star
 
+    @staticmethod
+    def hash_struct(a, b):
+        return BuildAutomata.dot_struct(a, BuildAutomata.star_struct(BuildAutomata.dot_struct(b, a)))
+
 
 class DFAfromNFA:
     """Класс для конвертации из NFA в DFA и последующей минимизации DFA"""
@@ -344,9 +348,10 @@ class NFAfromRegex:
         self.star = '*'
         self.plus = '+'
         self.dot = '.'
+        self.hash = "#"
         self.openingBracket = '('
         self.closingBracket = ')'
-        self.operators = [self.plus, self.dot]
+        self.operators = [self.plus, self.dot, self.hash]
         self.regex = regex
         self.alphabet = [chr(i) for i in range(65, 91)]
         self.alphabet.extend([chr(i) for i in range(97, 123)])
@@ -424,17 +429,19 @@ class NFAfromRegex:
         if len(self.automata) == 0:
             raise RuntimeError(f"Error processing operator '{operator}'. Stack is empty")
         if operator == self.star:
-            a = self.automata.pop()
-            self.automata.append(BuildAutomata.star_struct(a))
+            second = self.automata.pop()
+            self.automata.append(BuildAutomata.star_struct(second))
         elif operator in self.operators:
             if len(self.automata) < 2:
                 raise RuntimeError(f"Error processing operator '{operator}'. Inadequate operands")
-            a = self.automata.pop()
-            b = self.automata.pop()
+            second = self.automata.pop()
+            first = self.automata.pop()
             if operator == self.plus:
-                self.automata.append(BuildAutomata.plus_struct(b, a))
+                self.automata.append(BuildAutomata.plus_struct(first, second))
             elif operator == self.dot:
-                self.automata.append(BuildAutomata.dot_struct(b, a))
+                self.automata.append(BuildAutomata.dot_struct(first, second))
+            elif operator == self.hash:
+                self.automata.append(BuildAutomata.hash_struct(first, second))
 
 
 def draw_graph(automata, file=""):
