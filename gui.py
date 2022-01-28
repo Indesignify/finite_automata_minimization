@@ -55,7 +55,7 @@ class AutomataGUI:
 
         regexFrame = Frame(parentFrame)
         enterRegexLabel = Label(regexFrame,
-                                text="Введите регулярное выражение (разрешены операторы +, ., # и *):")
+                                text="Введите регулярное выражение (разрешены операторы , ; #):")
         self.regexVar = StringVar()
         self.regexField = Entry(regexFrame, width=80, textvariable=self.regexVar)
         buildRegexButton = Button(regexFrame, text="Построить", width=10, command=self.handle_build_regex_button)

@@ -7,7 +7,7 @@ from AutomataTheory import *
 
 
 def main():
-    inp = "(01*1)*1"
+    inp = "(01.1);1"
     if len(sys.argv) > 1:
         inp = sys.argv[1]
     print("Регулярное выражение: ", inp)

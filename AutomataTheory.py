@@ -346,8 +346,8 @@ class NFAfromRegex:
     def __init__(self, regex):
         self.nfa = None
         self.star = '*'
-        self.plus = '+'
-        self.dot = '.'
+        self.plus = ';'
+        self.dot = ','
         self.hash = "#"
         self.openingBracket = '('
         self.closingBracket = ')'
