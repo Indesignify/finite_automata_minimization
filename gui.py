@@ -30,7 +30,7 @@ class AutomataGUI:
         self.init_ui()
         self.selectedButton = 0
         self.dotFound = dotFound
-        startRegex = "0+1*0"
+        startRegex = "0;1#2"
         self.regexVar.set(startRegex)
         self.handle_build_regex_button()
 
